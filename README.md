@@ -54,267 +54,166 @@ async(() => {
 ### Calling methods
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = ['read', false];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'check_access_rights'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let access = await odoo.execute_kw('res.partner', 'check_access_rights', [
+        ['read', false]
+    ]);
+    console.log("Result: ", access);
 })();
 ```
 
 ### List Records
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-        [['is_company', '=', true],['customer', '=', true]]
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'search'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('res.partner', 'search', [
+        [['is_company', '=', false],['customer', '=', true]]
+    ]);
+    console.log("Result: ", id);
 })();
 ```
 
 ### Pagination
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-		[['is_company', '=', true],['customer', '=', true]]
-        , 10	// offset
-        , 5		// limit
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'search'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('res.partner', 'search', [
+        [['is_company', '=', false],['customer', '=', true]],
+        1, 2
+    ]);
+    console.log("Result: ", id);
 })();
 ```
 
 ### Count records
 
 ```js
-async(() => {
+(async () => {
     await odoo.connect();
-    let params = [
-		[['is_company', '=', true],['customer', '=', true]]
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'search_count'	// method name
-            , [params]
-        );
-        console.log("Count: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let rs = await odoo.execute_kw('res.partner', 'search_count', [
+        [['is_company', '=', false], ['customer', '=', false]]
+    ]);
+    console.log("Result: ", rs);
 })();
 ```
 
 ### Read records
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-		[['is_company', '=', true],['customer', '=', true]]
-        , 0	// offset
-        , 1	// limit
-    ];
-    try {
-    	let ids = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'search'	// method name
-            , [params]
-        );
-        let result = await odoo.execute_kw('res.partner', 'read', [ids]);
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('res.partner', 'search', [
+        [['is_company', '=', false],['customer', '=', true]]
+        , 0, 1
+    ]);
+    let rs = await odoo.execute_kw('res.partner', 'read', [id])
+    console.log("Result: ", rs);
 })();
 ```
 
 ### Read records filtered by fields
 
 ```js
-async(() => {
+(async() => {
+    let start = new Date().getTime();
     await odoo.connect();
-    let params = [
-		[['is_company', '=', true],['customer', '=', true]]
-        , 0	// offset
-        , 1	// limit
-    ];
-    try {
-    	let fields = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'search'	// method name
-            , [params]
-        );
-        fields.push(['name', 'country_id', 'comment']);
-        let result = await odoo.execute_kw('res.partner', 'read', [ids]);
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('res.partner', 'search', [
+        [['is_company', '=', false],['customer', '=', true]],
+        0, 1
+    ]);
+    let rs = await odoo.execute_kw('res.partner', 'read', [
+        14
+        , ['name', 'country_id', 'comment']
+    ])
+    console.log("During ", new Date().getTime() - start);
+    console.log("Result: ", rs);
 })();
 ```
 
 ### Listing record fields
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-		[], [], []
-        , ['string', 'help', 'type']
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'fields_get'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let rs = await odoo.execute_kw('res.partner', 'fields_get', [
+        [], [], [], ['string', 'help', 'type']
+    ]);
+    console.log("Result: ", rs);
 })();
 ```
 
 ### Search and read
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-		[['is_company', '=', true],['customer', '=', true]]
-        , ['name', 'country_id', 'comment']
-        , 0	// offset
-        , 5 // limit
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'search_read'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let result = await odoo.execute_kw('res.partner', 'search_read', [
+        [['is_company', '=', false],['customer', '=', true]]
+        , ['name', 'country_id', 'comment']  // fields
+        , 0, 5 // offset, limit
+    ]);
+    console.log("Result: ", result);
 })();
 ```
 
 ### Create records
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-		{'name': 'FFNew Partner'}
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'create'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('res.partner', 'create', [
+        { 'name': 'New Partner' }
+    ]);
+    console.log("Result: ", id);
 })();
 ```
 
 ### Update records
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-        [3626]
-		, {'name': 'FFNew Partner'}
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'write'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let resUpdate = await odoo.execute_kw('res.partner', 'write', [
+        [14]
+        , {'name': 'New Partner Updated.'}
+    ]);
+    let res = await odoo.execute_kw('res.partner', 'read', [
+        [14]
+    ]);
+    console.log("Result: ", res);
 })();
 ```
 
 ### Delete records
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
-    let params = [
-        [3626]
-    ];
-    try {
-    	let result = await odoo.execute_kw(
-            'res.partner'	// model name
-            , 'unlink'	// method name
-            , [params]
-        );
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('res.partner', 'unlink', [
+        [15]
+    ]);
+    console.log("Result: ", id);
 })();
 ```
 
 ### Inspection and introspection (ir.model)
 
 ```js
-async(() => {
+(async () => {
     await odoo.connect();
-    let params = [
-        {'name': 'Custom Model', 'model': 'x_custom_model', 'state': 'manual'}
-    ];
-    try {
-    	let fields = await odoo.execute_kw(
-            'ir.model'	// model name
-            , 'create'	// method name
-            , [{'name': 'Custom Model', 'model': 'x_custom_model', 'state': 'manual'}]
-        );
-	    let result = await odoo.execute_kw('x_custom_model', 'fields_get', [
-            [], [], [], ['string', 'help', 'type']
-        ]);
-        console.log("Result: ", result);
-    } catch(e) {
-        console.error("Error when try call execute_kw.", e);
-    }
+    let id = await odoo.execute_kw('ir.model', 'create', [{
+        'name': 'Custom Model2',
+        'model': 'x_custom_model_2',
+        'state': 'manual'
+    }]);
+    let fields = await odoo.execute_kw('x_custom_model_2', 'fields_get', [
+        [], [], [], ['string', 'help', 'type']
+    ])
+    console.log("Result ID: ", id);
+    console.log("Result get fields: ", fields);
 })();
 ```
 
@@ -352,25 +251,25 @@ async(() => {
 ### Workflow manipulations
 
 ```js
-(async() => {
+(async () => {
     await odoo.connect();
-    let user = await odoo.execute_kw('res.partner', 'search_read', [
-        [['customer', '=', true]]
-        , ['property_account_receivable', 'property_payment_term', 'property_account_position']
-        , 0, 1
-    ]);
-    let invoice = await odoo.execute_kw('account.invoice', 'create', [{
-        'partner_id': user[0]['id'],
-        'account_id': user[0]['property_account_receivable'][0],
-        'invoice_line': [0, False, {'name': "AAA"}]
+    let id = await odoo.execute_kw('ir.model', 'create', [{
+        'name': 'Custom Model3',
+        'model': 'x_custom_model_3',
+        'state': 'manual'
     }]);
-
-    /**
-     * Call workflow
-     */
-    let result = await odoo.execute_kw('account.invoice', 'invoice_open', [invoice]);
-    console.log("Result: ", result);
-
+    let field = await odoo.execute_kw('ir.model.fields', 'create', [{
+        'model_id': ids[0],
+        'name': 'x_col_name',
+        'ttype': 'char',
+        'state': 'manual',
+        'required': true,
+    }]);
+    let insertId = await odoo.execute_kw('x_custom_model_3', 'create', [{
+        'x_col_name': "Name for testing"
+    }]);
+    let res = await odoo.execute_kw('x_custom_model_3', 'read', [[insertId]]);
+    console.log("Result get fields: ", fields);
 })();
 ```
 
@@ -379,11 +278,11 @@ async(() => {
 ```js
 (async() => {
     await odoo.connect();
-    let rs = await odoo.execute_kw('account.invoice', 'search', [
+    let ids = await odoo.execute_kw('account.invoice', 'search', [
         [['type', '=', 'out_invoice'], ['state', '=', 'open']]
     ]);
-    let result = await odoo.render_report('account.report_invoice', [rs]);
-    console.log("Result: ", result);
+    let rs = await odoo.render_report('account.report_invoice', ids)
+    console.log("Result: ", rs);
 })();
 ```
 
@@ -395,6 +294,9 @@ async(() => {
 ## License
 
 Copyright 2016 Qazi Faisla Sami
+
+Tien Nguyen 2009 modified the source code structure for use according to the new NodeJS approach. 
+Can be run as Async / Await.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

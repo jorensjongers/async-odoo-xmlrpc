@@ -1,6 +1,6 @@
 {
     "name": "async-odoo-xmlrpc",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Nodejs client to call Odoo RPC's through xmlrpc library.",
     "author": {
         "name": "NguyenVanTien2009",
@@ -30,7 +30,8 @@
     "scripts": {},
     "keywords": [
         "odoo",
-        "xmlrpc"
+        "xmlrpc",
+        "async/await"
     ],
     "_npmUser": {
         "name": "tien.nguyen",
