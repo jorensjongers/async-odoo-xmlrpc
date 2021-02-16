@@ -1,5 +1,4 @@
 /*
-*
 * Author: Faisal Sami
 * mail: faisalsami78@gmail.com
 * https://github.com/faisalsami/odoo-xmlrpc
@@ -49,13 +48,13 @@ var Odoo = function (config) {
         return new Promise((resolve, reject) => {
             client.methodCall('authenticate', params, (error, value) => {
                 if (error) {
-                    return reject(error)
+                    reject(error)
                 }
                 if (!value) {
-                    return reject({ message: "No UID returned from authentication." })
+                    reject({ message: "No UID returned from authentication." })
                 }
                 uid = value;
-                return resolve(value);
+                resolve(value);
             });
         })
     };
@@ -84,20 +83,18 @@ var Odoo = function (config) {
             , this.password
             , model
             , method
+            , params
         ];
-        params.forEach(it => fparams.push(it));
 
         return new Promise((resolve, reject) => {
             client.methodCall('execute_kw', fparams, (error, value) => {
-                if (error) {
-                    return reject(error)
-                }
-                return resolve(value);
+                error ? reject(error) : resolve(value)
             });
         })
     };
 
     /**
+     * call workflow in odoo.
      * 
      * @param {String} model Model name in Odoo
      * @param {String} method Method name in Odoo
@@ -120,18 +117,16 @@ var Odoo = function (config) {
             , this.password
             , model
             , method
+            , params
         ];
-        params.forEach(it => fparams.push(it));
 
         return new Promise((resolve, reject) => {
-            client.methodCall('exec_workflow', fparams, function (error, value) {
-                if (error) {
-                    return reject(error);
-                }
-                return resolve(value);
+            client.methodCall('exec_workflow', fparams, (error, value) => {
+                error ? reject(error) : resolve(value);
             });
         })
     };
+
 
     this.render_report = async (report, params) => {
         var clientOptions = {
@@ -143,21 +138,18 @@ var Odoo = function (config) {
         var client = this.secure === false
             ? xmlrpc.createClient(clientOptions)
             : xmlrpc.createSecureClient(clientOptions);
-        
+
         var fparams = [
             this.db
             , uid
             , this.password
             , report
+            , params
         ];
-        params.forEach(it => fparams.push(it));
-        
+
         return new Promise((resolve, reject) => {
-            client.methodCall('render_report', fparams, function (error, value) {
-                if (error) {
-                    return reject(error);
-                }
-                return resolve(value);
+            client.methodCall('render_report', fparams, (error, value) => {
+                error ? reject(error) : resolve(value)
             });
         })
     };

@@ -1,25 +1,11 @@
-var Odoo = require('../lib/index');
+var Odoo = require('../src/index');
+var config = require('./config');
+var odoo = new Odoo(config);
 
-var odoo = new Odoo({
-    url: '<insert server URL>',
-    port: '<insert server port default 80>',
-    db: '<insert database name>',
-    username: '<insert username>',
-    password: '<insert password>'
-});
-
-odoo.connect(function (err) {
-    if (err) { return console.log(err); }
-    console.log('Connected to Odoo server.');
-    var inParams = [];
-    inParams.push([]);
-    inParams.push([]);
-    inParams.push([]);
-    inParams.push(['string', 'help', 'type']);  //attributes
-    var params = [];
-    params.push(inParams);
-    odoo.execute_kw('res.partner', 'fields_get', params, function (err, value) {
-        if (err) { return console.log(err); }
-        console.log('Result: ', value);
-    });
-});
+(async() => {
+    await odoo.connect();
+    let rs = await odoo.execute_kw('res.partner', 'fields_get', [
+        [], [], [], ['string', 'help', 'type']
+    ]);
+    console.log("Result: ", rs);
+})();
