@@ -1,6 +1,6 @@
 # odoo-xmlrpc
 
-Node.js client library for [odoo](https://www.odoo.com/) ERP using xmlrpc.
+Node.js client library for [odoo](https://www.odoo.com/) ERP using xmlrpc. Al most API base on [External API](https://www.odoo.com/documentation/14.0/webservices/odoo.html).
 
 ## Node version
 Works better with NodeJS v11.16 and further
