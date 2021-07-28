@@ -41,7 +41,7 @@ var odoo = new Odoo({
 ### Logging in
 
 ```js
-async(() => {
+(async() => {
     try {
         await odoo.connect();
         console.log("Connect to Odoo XML-RPC is successed.");
