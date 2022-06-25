@@ -220,7 +220,7 @@ var odoo = new Odoo({
 ### Inspection and introspection (ir.model.fields)
 
 ```js
-async(() => {
+(async() => {
     await odoo.connect();
     try {
         await odoo.execute_kw('ir.model', 'create', [{
