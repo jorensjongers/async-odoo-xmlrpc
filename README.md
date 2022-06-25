@@ -28,7 +28,7 @@ var Odoo = require('async-odoo-xmlrpc');
 
 You are also use `async-odoo-xmlrpc` with **TypeScript**.
 
-```
+```js
 import Odds from 'async-odoo-xmlrpc'
 ```
 
