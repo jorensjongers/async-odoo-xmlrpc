@@ -8,7 +8,7 @@ Works better with NodeJS v11.16 and further
 ## Installation
 
 ```sh
-$ npm install async-odoo-xmlrpc
+npm install async-odoo-xmlrpc
 ```
 
 ## Methods
@@ -24,6 +24,12 @@ odoo.render_report(report, params): Promise<Object>
 
 ```js
 var Odoo = require('async-odoo-xmlrpc');
+```
+
+You are also use `async-odoo-xmlrpc` with **TypeScript**.
+
+```
+import Odds from 'async-odoo-xmlrpc'
 ```
 
 ### Configuration
