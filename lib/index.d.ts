@@ -17,8 +17,9 @@ declare class Odoo {
      * @param {String} model Model name in Odoo.
      * @param {String} method Name of method in Odoo.
      * @param {Array<Object>} params Params in to execute from Odoo.
+     * @param {Object} [context] Context parameterto execute from Odoo.
      */
-    execute_kw: (model: string, method: string, params: Array<Object>) => Promise<any>;
+    execute_kw: (model: string, method: string, params: Array<Object>, context?: Object | undefined) => Promise<any>;
     /**
      * call workflow in odoo.
      *

@@ -67,8 +67,9 @@ class Odoo {
          * @param {String} model Model name in Odoo.
          * @param {String} method Name of method in Odoo.
          * @param {Array<Object>} params Params in to execute from Odoo.
+         * @param {Object} [context] Context parameterto execute from Odoo.
          */
-        this.execute_kw = async (model, method, params) => {
+        this.execute_kw = async (model, method, params, context) => {
             var clientOptions = {
                 host: this.host,
                 port: this.port,
@@ -85,8 +86,12 @@ class Odoo {
                 this.password,
                 model,
                 method,
-                params
+                params,
             ];
+
+            if (context !== undefined) {
+              fparams.push(context)
+            }
 
             return new Promise((resolve, reject) => {
                 client.methodCall('execute_kw', fparams, (error, value) => {
